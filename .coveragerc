@@ -1,0 +1,5 @@
+[run]
+include = sih_back/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
