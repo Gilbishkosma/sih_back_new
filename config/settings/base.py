@@ -217,6 +217,7 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'https://sihface.now.sh'
 ]             
 
 

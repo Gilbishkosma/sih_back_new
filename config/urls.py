@@ -17,7 +17,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path('rest-auth/', include('rest_auth.urls')),
-    path('',include("sihfacerecognition.api.urls",namespace="api"))
+    path('',include("sih_back.api.urls",namespace="api"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

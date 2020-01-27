@@ -1,6 +1,6 @@
 from django.urls import path
 
-from sihfacerecognition.api.views import (
+from sih_back.api.views import (
 	entry_create_view,
 	exit_create_view,
 	access_log
