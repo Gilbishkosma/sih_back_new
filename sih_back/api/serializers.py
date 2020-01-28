@@ -16,18 +16,18 @@ class ProfileSerailizer(serializers.ModelSerializer):
 		exclude = ["created_at"]
 
 class EntryTimeSerializer(serializers.ModelSerializer):	
-	profile_id = serializers.IntegerField(write_only=True)
+	profile_name = serializers.CharField(write_only=True)
 	profile = ProfileSerailizer(read_only=True)
 	entry_time = serializers.SerializerMethodField()
 	exit_time = serializers.ReadOnlyField()
 	class Meta:
 		model = AccessLog
-		fields = ['id','profile_id','profile','entry_time','exit_time']
+		fields = ['id','profile_name','profile','entry_time','exit_time']
 
 	def create(self, validated_data):
-		profile_id = validated_data.pop('profile_id')
+		profile_name = validated_data.pop('profile_name')
 		try:
-			profile = Profile.objects.get(id=profile_id)
+			profile = Profile.objects.get(name=profile_name)
 		except:
 			raise NotFound("Profile Not Found")
 		instance = AccessLog(profile = profile)
@@ -38,18 +38,18 @@ class EntryTimeSerializer(serializers.ModelSerializer):
 		return better_format(obj,"entry")
 
 class ExitTimeSerializer(serializers.ModelSerializer):
-	profile_id = serializers.IntegerField(write_only=True)
+	profile_name = serializers.CharField(write_only=True)
 	profile = ProfileSerailizer(read_only=True)
 	entry_time = serializers.ReadOnlyField()
 	exit_time = serializers.ReadOnlyField()
 	class Meta:
 		model = AccessLog
-		fields = ['id','profile_id','profile','entry_time','exit_time']
+		fields = ['id','profile_name','profile','entry_time','exit_time']
 
 	def create(self,validated_data):
-		profile_id = validated_data.pop('profile_id')
+		profile_name = validated_data.pop('profile_name')
 		try:
-			profile = Profile.objects.get(id=profile_id)
+			profile = Profile.objects.get(name=profile_name)
 		except:
 			raise NotFound("Profile Not Found")
 		try:
