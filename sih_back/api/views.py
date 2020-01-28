@@ -4,8 +4,24 @@ from rest_framework.generics import ListCreateAPIView,ListAPIView
 from .models import AccessLog
 from .serializers import EntryTimeSerializer , ExitTimeSerializer , AccessLogSerializer
 from django.db.models import Q
+from twilio.rest import Client
+from rest_framework.response import Response
+from rest_framework import status
 # Create your views here.
 
+
+
+account_sid = 'ACd5982c56d7de81915fdb6863ba6a2630'
+auth_token = '0f26b5f3b6b47cbed0ed15185dc07aa9'
+client = Client(account_sid, auth_token)
+
+def send(recipient, msg):
+    message = client.messages \
+                    .create(
+                         body=str(msg),
+                         from_='+12018906793',
+                         to=str(recipient)
+                     )
 
 
 
@@ -49,3 +65,16 @@ class AccessLogView(ListAPIView):
 		return queryset
 
 access_log = AccessLogView.as_view()
+
+
+class EmergencyMsgView(APIView):
+
+	def post(self,request):
+		msg = self.request.data.get('message')
+		access_log = AccessLog.objects.filter(exit_time = None)
+		for person in access_log:
+			if person.profile.phone_no:
+				send(person.profile.phone_no,msg)
+		return Response({'status':status.HTTP_201_CREATED})
+
+emergency_view = EmergencyMsgView.as_view()
